@@ -1,5 +1,6 @@
 package ru.job4j.dream.store;
 
+import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,8 @@ public class Store {
     private static final Store INST = new Store();
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
+
+    private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private Store() {
         String ls = System.lineSeparator();
@@ -63,13 +66,20 @@ public class Store {
                                 + "-Владение письменным английским языком.",
                         LocalDateTime.of(2021, 8, 28, 15, 45, 25))
         );
+        candidates.put(1, new Candidate(1, "Junior Java"));
+        candidates.put(2, new Candidate(2, "Middle Java"));
+        candidates.put(3, new Candidate(3, "Senior Java"));
     }
 
     public static Store instOf() {
         return INST;
     }
 
-    public Collection<Post> findAll() {
+    public Collection<Post> findAllPosts() {
         return posts.values();
+    }
+
+    public Collection<Candidate> findAllCandidates() {
+        return candidates.values();
     }
 }

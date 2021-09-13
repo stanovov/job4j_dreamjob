@@ -35,7 +35,7 @@
             </thead>
             <tbody>
             <% int count = 1; %>
-            <% for (Post post : Store.instOf().findAll()) { %>
+            <% for (Post post : Store.instOf().findAllPosts()) { %>
                 <tr>
                     <td><%= "#" + count++%></td>
                     <td><%= post.getCreated().format(DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm")) %></td>
