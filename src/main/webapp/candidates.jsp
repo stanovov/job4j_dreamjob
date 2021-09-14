@@ -32,7 +32,10 @@
         <table class="table">
           <thead>
           <tr>
-            <th scope="col">Названия</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Фото</th>
+            <th scope="col">Действия (Фото)</th>
+            <th scope="col"></th>
           </tr>
           </thead>
           <tbody>
@@ -43,6 +46,19 @@
                   <i class="fa fa-edit mr-3"></i>
                 </a>
                 <c:out value="${candidate.name}"/>
+              </td>
+              <td>
+                <img src="<c:url value='/downloadPhoto.do?id=${candidate.id}'/>" width="100px" height="100px"/>
+              </td>
+              <td>
+                <a href='<c:url value="/photoUpload.jsp?id=${candidate.id}"/>'>Добавить</a>
+                <br>
+                <a href="<c:url value='/deletePhoto.do?id=${candidate.id}'/>">Удалить</a>
+              </td>
+              <td>
+                <a href="<c:url value='/deleteCandidate.do?id=${candidate.id}'/>">
+                  <i class="fa fa-trash mr-3"></i>
+                </a>
               </td>
             </tr>
           </c:forEach>
