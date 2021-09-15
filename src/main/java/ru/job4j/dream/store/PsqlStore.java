@@ -3,6 +3,7 @@ package ru.job4j.dream.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -86,6 +87,25 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public Collection<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users")) {
+            try (ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(
+                            getUser(resultSet)
+                    );
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    @Override
     public void save(Post post) {
         if (post.getId() == 0) {
             create(post);
@@ -100,6 +120,15 @@ public class PsqlStore implements Store {
             create(candidate);
         } else {
             update(candidate);
+        }
+    }
+
+    @Override
+    public void save(User user) {
+        if (user.getId() == 0) {
+            create(user);
+        } else {
+            update(user);
         }
     }
 
@@ -138,6 +167,23 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public User findUserById(int id) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement statement = cn.prepareStatement("SELECT * FROM users WHERE id = ?")) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = getUser(resultSet);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
     public void deletePost(int id) {
         try (Connection cn = pool.getConnection();
              PreparedStatement statement
@@ -154,6 +200,18 @@ public class PsqlStore implements Store {
         try (Connection cn = pool.getConnection();
              PreparedStatement statement
                      = cn.prepareStatement("DELETE FROM candidates WHERE id = ?")) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement statement
+                     = cn.prepareStatement("DELETE FROM users WHERE id = ?")) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (Exception e) {
@@ -178,18 +236,6 @@ public class PsqlStore implements Store {
         }
     }
 
-    private void update(Post post) {
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     "UPDATE post SET name = ? WHERE id = ?")) {
-            ps.setString(1, post.getName());
-            ps.setInt(2, post.getId());
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void create(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
@@ -207,12 +253,57 @@ public class PsqlStore implements Store {
         }
     }
 
+    private void create(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.executeUpdate();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void update(Post post) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE post SET name = ? WHERE id = ?")) {
+            ps.setString(1, post.getName());
+            ps.setInt(2, post.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      "UPDATE candidates SET name = ? WHERE id = ?")) {
             ps.setString(1, candidate.getName());
             ps.setInt(2, candidate.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void update(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?")) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,4 +324,12 @@ public class PsqlStore implements Store {
         );
     }
 
+    private User getUser(ResultSet resultSet) throws SQLException {
+        return new User(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("email"),
+                resultSet.getString("password")
+        );
+    }
 }
