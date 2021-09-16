@@ -25,10 +25,19 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Авторизация
+                Регистрация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/reg.do" method="post">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <c:if test="${not empty name}">
+                            <input type="text" class="form-control" name="name" value="<c:out value="${name}"/>">
+                        </c:if>
+                        <c:if test="${empty name}">
+                            <input type="text" class="form-control" name="name">
+                        </c:if>
+                    </div>
                     <div class="form-group">
                         <label>Почта</label>
                         <c:if test="${not empty email}">
@@ -47,8 +56,8 @@
                             <input type="password" class="form-control" name="password">
                         </c:if>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-left">Войти</button>
-                    <button type="submit" class="btn btn-light pull-right m1-2" formaction="<%=request.getContextPath()%>/reg.jsp">Регистрация</button>
+                    <button type="submit" class="btn btn-primary pull-left">Зарегестрировать</button>
+                    <button type="submit" class="btn btn-primary pull-right" formaction="<%=request.getContextPath()%>/login.jsp">Отмена</button>
                     <c:if test="${not empty error}">
                         <div style="color:red; font-weight: bold; margin: 30px 0;">
                             <c:out value="${error}"/>
