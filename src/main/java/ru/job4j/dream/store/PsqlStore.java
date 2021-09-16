@@ -87,25 +87,6 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Collection<User> findAllUsers() {
-        List<User> users = new ArrayList<>();
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users")) {
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(
-                            getUser(resultSet)
-                    );
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return users;
-    }
-
-    @Override
     public void save(Post post) {
         if (post.getId() == 0) {
             create(post);
@@ -167,23 +148,6 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public User findUserById(int id) {
-        User user = null;
-        try (Connection cn = pool.getConnection();
-             PreparedStatement statement = cn.prepareStatement("SELECT * FROM users WHERE id = ?")) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    user = getUser(resultSet);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    @Override
     public void deletePost(int id) {
         try (Connection cn = pool.getConnection();
              PreparedStatement statement
@@ -208,15 +172,20 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public User findByEmail(String email) {
+        User user = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement statement
-                     = cn.prepareStatement("DELETE FROM users WHERE id = ?")) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
+             PreparedStatement statement = cn.prepareStatement("SELECT * FROM users WHERE email = ?")) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = getUser(resultSet);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return user;
     }
 
     private void create(Post post) {

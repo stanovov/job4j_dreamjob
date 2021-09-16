@@ -9,14 +9,12 @@ import java.util.Collection;
 public interface Store {
     Collection<Post> findAllPosts();
     Collection<Candidate> findAllCandidates();
-    Collection<User> findAllUsers();
     void save(Post post);
     void save(Candidate candidate);
     void save(User user);
     Post findPostById(int id);
     Candidate findCandidateById(int id);
-    User findUserById(int id);
     void deletePost(int id);
     void deleteCandidate(int id);
-    void deleteUser(int id);
+    User findByEmail(String email);
 }

@@ -96,11 +96,6 @@ public class MemStore implements Store {
     }
 
     @Override
-    public Collection<User> findAllUsers() {
-        return users.values();
-    }
-
-    @Override
     public void save(Post post) {
         if (post.getId() == 0) {
             post.setId(POST_ID.incrementAndGet());
@@ -135,11 +130,6 @@ public class MemStore implements Store {
     }
 
     @Override
-    public User findUserById(int id) {
-        return users.get(id);
-    }
-
-    @Override
     public void deletePost(int id) {
         posts.remove(id);
     }
@@ -150,7 +140,10 @@ public class MemStore implements Store {
     }
 
     @Override
-    public void deleteUser(int id) {
-        users.remove(id);
+    public User findByEmail(String email) {
+        return users.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
     }
 }
