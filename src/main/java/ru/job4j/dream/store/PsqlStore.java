@@ -15,8 +15,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PsqlStore implements Store {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
 
     private final BasicDataSource pool = new BasicDataSource();
 
@@ -62,7 +66,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
         return posts;
     }
@@ -81,7 +85,7 @@ public class PsqlStore implements Store {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
         return candidates;
     }
@@ -125,7 +129,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
         return post;
     }
@@ -142,7 +146,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
         return candidate;
     }
@@ -155,7 +159,7 @@ public class PsqlStore implements Store {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -167,7 +171,7 @@ public class PsqlStore implements Store {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -183,7 +187,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
         return user;
     }
@@ -201,7 +205,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -218,7 +222,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -237,7 +241,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -249,7 +253,7 @@ public class PsqlStore implements Store {
             ps.setInt(2, post.getId());
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -261,7 +265,7 @@ public class PsqlStore implements Store {
             ps.setInt(2, candidate.getId());
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
@@ -275,7 +279,7 @@ public class PsqlStore implements Store {
             ps.setInt(4, user.getId());
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Database query failed", e);
         }
     }
 
