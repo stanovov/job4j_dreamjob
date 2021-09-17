@@ -41,10 +41,10 @@
                     <div class="form-group">
                         <label>Почта</label>
                         <c:if test="${not empty email}">
-                            <input type="text" class="form-control" name="email" value="<c:out value="${email}"/>">
+                            <input type="text" class="form-control" name="email" value="<c:out value="${email}"/>" required>
                         </c:if>
                         <c:if test="${empty email}">
-                            <input type="text" class="form-control" name="email">
+                            <input type="text" class="form-control" name="email" required>
                         </c:if>
                     </div>
                     <div class="form-group">
@@ -56,8 +56,8 @@
                             <input type="password" class="form-control" name="password">
                         </c:if>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-left">Зарегестрировать</button>
-                    <button type="submit" class="btn btn-primary pull-right" formaction="<%=request.getContextPath()%>/login.jsp">Отмена</button>
+                    <button type="submit" class="btn btn-primary pull-left">Зарегистрировать</button>
+                    <button type="submit" class="btn btn-primary pull-right" formaction="<%=request.getContextPath()%>/login.jsp" formnovalidate>Отмена</button>
                     <c:if test="${not empty error}">
                         <div style="color:red; font-weight: bold; margin: 30px 0;">
                             <c:out value="${error}"/>
