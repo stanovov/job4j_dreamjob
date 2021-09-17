@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            let result = true;
+            if ($('#inputName').val() === '') {
+                alert($('#inputName').attr('title'));
+                result = false;
+            }
+            if ($('#inputSurname').val() === '') {
+                alert($('#inputSurname').attr('title'));
+                result = false;
+            }
+            if ($('#textareaDescription').val() === '') {
+                alert($('#textareaDescription').attr('title'));
+                result = false;
+            }
+            return result;
+        }
+    </script>
 </head>
 <body>
 
@@ -17,30 +35,32 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputName">Имя</label>
-                <input type="text" class="form-control" id="inputName">
+                <input type="text" class="form-control" id="inputName" title="Введите имя">
             </div>
             <div class="form-group col-md-6">
                 <label for="inputSurname">Фамилия</label>
-                <input type="text" class="form-control" id="inputSurname">
+                <input type="text" class="form-control" id="inputSurname" title="Введите фамилию">
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-1 control-label">Пол:</label>
             <div class="col-sm-4">
-                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonMan" value="clear" checked> Мужской
+                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonMan" value="man" checked> Мужской
                 </label>
-                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonWoman" value="cloudy"> Женский
+                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonWoman" value="woman"> Женский
                 </label>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-12">
-                <label for="formControlTextarea">Описание:</label>
-                <textarea class="form-control" id="formControlTextarea" rows="4"></textarea>
+                <label for="textareaDescription">Описание:</label>
+                <textarea class="form-control" id="textareaDescription" rows="4" title="Добавьте описание"></textarea>
             </div>
         </div>
+
+        <button type="button" class="btn btn-default" onclick="return validate();">Сохранить</button>
 
         <div class="form-row">
             <table class="table table-hover">
