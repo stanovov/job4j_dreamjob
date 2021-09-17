@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
+        let count = 4;
         function validate() {
             let result = true;
             if ($('#inputName').val() === '') {
@@ -23,6 +24,20 @@
                 result = false;
             }
             return result;
+        }
+        function addRow() {
+            const name = $('#inputName').val();
+            const surname = $('#inputSurname').val();
+            const sex = $("input[type='radio'][name='sex']:checked").val();
+            const description = $('#textareaDescription').val();
+            let row = '<tr>'
+                    + '<th scope="row">' + (count++) + '</th>'
+                    + '<td>' + name + '</td>'
+                    + '<td>' + surname + '</td>'
+                    + '<td>' + sex + '</td>'
+                    + '<td>' + description + '</td>'
+                    + '</tr>';
+            $('#table tr:last').after(row);
         }
     </script>
 </head>
@@ -46,9 +61,9 @@
         <div class="form-group">
             <label class="col-sm-1 control-label">Пол:</label>
             <div class="col-sm-4">
-                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonMan" value="man" checked> Мужской
+                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonMan" value="male" checked> Мужской
                 </label>
-                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonWoman" value="woman"> Женский
+                <label class="radio-inline"> <input type="radio" name="sex" id="radioButtonWoman" value="female"> Женский
                 </label>
             </div>
         </div>
@@ -63,13 +78,14 @@
         <button type="button" class="btn btn-default" onclick="return validate();">Сохранить</button>
 
         <div class="form-row">
-            <table class="table table-hover">
+            <table class="table table-hover" id='table'>
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Пол</th>
+                    <th scope="col">Описание</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -77,22 +93,26 @@
                     <th scope="row">1</th>
                     <td>Mark</td>
                     <td>Otto</td>
-                    <td>@mdo</td>
+                    <td>male</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th scope="row">2</th>
                     <td>Jacob</td>
                     <td>Thornton</td>
-                    <td>@fat</td>
+                    <td>male</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th scope="row">3</th>
                     <td>Larry</td>
                     <td>Bird</td>
-                    <td>@twitter</td>
+                    <td>male</td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>
+            <button type="button" class="btn btn-default" onclick="addRow()">Add row</button>
         </div>
     </form>
 </div>
