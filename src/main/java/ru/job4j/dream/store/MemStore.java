@@ -1,14 +1,18 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class MemStore implements Store {
 
@@ -26,7 +30,14 @@ public class MemStore implements Store {
 
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
 
+    private final List<City> cities;
+
     private MemStore() {
+        cities = List.of(
+                new City(1, "Москва"),
+                new City(2, "Санкт-Петербург"),
+                new City(3, "Тверь")
+        );
     }
 
     public static MemStore instOf() {
@@ -41,6 +52,27 @@ public class MemStore implements Store {
     @Override
     public Collection<Candidate> findAllCandidates() {
         return candidates.values();
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        return cities;
+    }
+
+    @Override
+    public Collection<Post> findPostsForLastDay() {
+        LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
+        return posts.values().stream()
+                .filter(post -> post.getCreated().isAfter(dayAgo))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Candidate> findCandidatesForLastDay() {
+        LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
+        return candidates.values().stream()
+                .filter(candidate -> candidate.getCreated().isAfter(dayAgo))
+                .collect(Collectors.toList());
     }
 
     @Override

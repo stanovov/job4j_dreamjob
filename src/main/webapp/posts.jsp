@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="cs" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -60,7 +63,11 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Названия</th>
+                        <th scope="col"></th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Описание</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -70,7 +77,21 @@
                                 <a href='<c:url value="/post/edit.jsp?id=${post.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
+                            </td>
+                            <td>
+                                <fmt:parseDate value="${ post.created }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreated" type="both" />
+                                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedCreated }" />
+                            </td>
+                            <td>
                                 <c:out value="${post.name}"/>
+                            </td>
+                            <td>
+                                <pre><c:out value="${post.description}"/></pre>
+                            </td>
+                            <td>
+                                <a href="<c:url value='/deletePost.do?id=${post.id}'/>">
+                                    <i class="fa fa-trash mr-3"></i>
+                                </a>
                             </td>
                         </tr>
                     </c:forEach>

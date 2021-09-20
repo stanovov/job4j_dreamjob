@@ -32,10 +32,14 @@
                     <div class="form-group">
                         <label>Почта</label>
                         <c:if test="${not empty email}">
-                            <input type="text" class="form-control" name="email" value="<c:out value="${email}"/>" required>
+                            <input type="text" class="form-control" name="email" value="<c:out value="${email}"/>" required
+                                   oninvalid="this.setCustomValidity('Введите свою почту для входа в систему')"
+                                   oninput="this.setCustomValidity('')"/>
                         </c:if>
                         <c:if test="${empty email}">
-                            <input type="text" class="form-control" name="email" required>
+                            <input type="text" class="form-control" name="email" required
+                                   oninvalid="this.setCustomValidity('Введите свою почту для входа в систему')"
+                                   oninput="this.setCustomValidity('')"/>
                         </c:if>
                     </div>
                     <div class="form-group">

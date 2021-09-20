@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -60,9 +61,12 @@
         <table class="table">
           <thead>
           <tr>
+            <th scope="col"></th>
+            <th scope="col">Дата создания</th>
             <th scope="col">Наименование</th>
             <th scope="col">Фото</th>
             <th scope="col">Действия (Фото)</th>
+            <th scope="col">Город</th>
             <th scope="col"></th>
           </tr>
           </thead>
@@ -73,6 +77,12 @@
                 <a href='<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>'>
                   <i class="fa fa-edit mr-3"></i>
                 </a>
+              </td>
+              <td>
+                <fmt:parseDate value="${ candidate.created }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreated" type="both" />
+                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedCreated }" />
+              </td>
+              <td>
                 <c:out value="${candidate.name}"/>
               </td>
               <td>
@@ -82,6 +92,9 @@
                 <a href='<c:url value="/photoUpload.jsp?id=${candidate.id}"/>'>Добавить</a>
                 <br>
                 <a href="<c:url value='/deletePhoto.do?id=${candidate.id}'/>">Удалить</a>
+              </td>
+              <td>
+                <c:out value="${candidate.city.name}"/>
               </td>
               <td>
                 <a href="<c:url value='/deleteCandidate.do?id=${candidate.id}'/>">

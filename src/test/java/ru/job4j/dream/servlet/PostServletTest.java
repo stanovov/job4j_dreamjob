@@ -34,6 +34,7 @@ public class PostServletTest {
 
         PowerMockito.when(req.getParameter("id")).thenReturn("1");
         PowerMockito.when(req.getParameter("name")).thenReturn("n");
+        PowerMockito.when(req.getParameter("description")).thenReturn("some text..");
 
         new PostServlet().doPost(req, resp);
 

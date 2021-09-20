@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -61,6 +62,31 @@
                 Сегодняшние вакансии.
             </div>
             <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Описание</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${posts}" var="post">
+                        <tr>
+                            <td>
+                                <fmt:parseDate value="${ post.created }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreated" type="both" />
+                                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedCreated }" />
+                            </td>
+                            <td>
+                                <c:out value="${post.name}"/>
+                            </td>
+                            <td>
+                                <pre><c:out value="${post.description}"/></pre>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -70,6 +96,35 @@
                 Сегодняшние кандидаты.
             </div>
             <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Фото</th>
+                        <th scope="col">Город</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${candidates}" var="candidate">
+                        <tr>
+                            <td>
+                                <fmt:parseDate value="${ candidate.created }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreated" type="both" />
+                                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedCreated }" />
+                            </td>
+                            <td>
+                                <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <img src="<c:url value='/downloadPhoto.do?id=${candidate.id}'/>" width="100px" height="100px"/>
+                            </td>
+                            <td>
+                                <c:out value="${candidate.city.name}"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

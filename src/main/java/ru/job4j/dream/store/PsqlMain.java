@@ -1,13 +1,14 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 
 public class PsqlMain {
     public static void main(String[] args) {
         Store store = PsqlStore.instOf();
-        Post newPost = new Post(0, "Java Job");
-        Candidate newCandidate = new Candidate(0, "Java Candidate");
+        Post newPost = new Post(0, "Java Job", "");
+        Candidate newCandidate = new Candidate(0, "Java Candidate", new City(1));
         store.save(newPost);
         store.save(newCandidate);
         for (Post post : store.findAllPosts()) {

@@ -25,6 +25,6 @@ public class AuthServlet extends HttpServlet {
         }
         HttpSession sc = req.getSession();
         sc.setAttribute("user", user);
-        resp.sendRedirect(req.getContextPath() + "/posts.do");
+        resp.sendRedirect(req.getContextPath() + "/index.do");
     }
 }

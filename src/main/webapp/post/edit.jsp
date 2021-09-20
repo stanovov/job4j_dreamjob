@@ -21,10 +21,28 @@
 
   <title>Работа мечты</title>
 </head>
+<script>
+  function validate() {
+    let result = true;
+    if ($('#inputName').val() === '') {
+      $("#nameHelp").text("Необходимо заполнить имя");
+      result = false;
+    } else {
+      $("#nameHelp").text("");
+    }
+    if ($('#descriptionTextarea').val() === '') {
+      $("#descriptionHelp").text("Добавьте описание");
+      result = false;
+    } else {
+      $("#descriptionHelp").text("");
+    }
+    return result;
+  }
+</script>
 <body>
 <%
   String id = request.getParameter("id");
-  Post post = new Post(0, "");
+  Post post = new Post(0, "", "");
   if (id != null) {
     post = PsqlStore.instOf().findPostById(Integer.parseInt(id));
   }
@@ -70,11 +88,20 @@
       </div>
       <div class="card-body">
         <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
+
           <div class="form-group">
             <label>Имя</label>
-            <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+            <input id="inputName" type="text" class="form-control" name="name" value="<%=post.getName()%>">
+            <small id="nameHelp" style="color: red"></small>
           </div>
-          <button type="submit" class="btn btn-primary">Сохранить</button>
+
+          <div class="form-group">
+            <label for="descriptionTextarea">Описание</label>
+            <textarea class="form-control" id="descriptionTextarea" name="description" rows="3"><%=post.getDescription()%></textarea>
+            <small id="descriptionHelp" style="color: red"></small>
+          </div>
+
+          <button type="submit" class="btn btn-primary" onclick="return validate();">Сохранить</button>
         </form>
       </div>
     </div>
